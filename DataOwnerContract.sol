@@ -7,22 +7,21 @@ contract DataOwnerContract {
         string email;
         string password;
         string department;
-        string role;
     }
 
     mapping(string => DataOwner) public dataOwners;
     string[] public dataOwnerIds;
 
-    event DataOwnerCreated(string id, string name, string email, string department, string role);
+    event DataOwnerCreated(string id, string name, string email, string department);
 
-    function createDataOwner(string memory _id, string memory _name, string memory _email, string memory _password, string memory _department, string memory _role) public {
+    function createDataOwner(string memory _id, string memory _name, string memory _email, string memory _password, string memory _department) public {
         require(bytes(dataOwners[_id].id).length == 0, "Data owner already exists");
         require(!_isEmailTaken(_email), "Email already exists");
 
-        dataOwners[_id] = DataOwner(_id, _name, _email, _password, _department, _role);
+        dataOwners[_id] = DataOwner(_id, _name, _email, _password, _department);
         dataOwnerIds.push(_id);
         
-        emit DataOwnerCreated(_id, _name, _email, _department, _role);
+        emit DataOwnerCreated(_id, _name, _email, _department);
     }
 
     function _isEmailTaken(string memory _email) internal view returns (bool) {
