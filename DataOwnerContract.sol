@@ -11,15 +11,18 @@ contract DataOwnerContract {
 
     mapping(string => DataOwner) public dataOwners;
     string[] public dataOwnerIds;
+    mapping(string => bool) public departmentExists;
 
     event DataOwnerCreated(string id, string name, string email, string department);
 
     function createDataOwner(string memory _id, string memory _name, string memory _email, string memory _password, string memory _department) public {
         require(bytes(dataOwners[_id].id).length == 0, "Data owner already exists");
         require(!_isEmailTaken(_email), "Email already exists");
+        require(!departmentExists[_department], "Department already assigned to a data owner");
 
         dataOwners[_id] = DataOwner(_id, _name, _email, _password, _department);
         dataOwnerIds.push(_id);
+        departmentExists[_department] = true;
         
         emit DataOwnerCreated(_id, _name, _email, _department);
     }
