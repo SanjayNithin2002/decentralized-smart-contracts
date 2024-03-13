@@ -39,6 +39,15 @@ contract DataOwnerContract {
         return dataOwners[_id];
     }
 
+    function getByEmail(string memory _email) public view returns (DataOwner memory) {
+        for (uint i = 0; i < dataOwnerIds.length; i++) {
+            if (keccak256(bytes(dataOwners[dataOwnerIds[i]].email)) == keccak256(bytes(_email))) {
+                return dataOwners[dataOwnerIds[i]];
+            }
+        }
+        revert("Data owner does not exist");
+    }
+
     function getAllDataOwners() public view returns (DataOwner[] memory) {
         DataOwner[] memory result = new DataOwner[](dataOwnerIds.length);
         for (uint i = 0; i < dataOwnerIds.length; i++) {
