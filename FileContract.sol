@@ -4,7 +4,7 @@ contract FileContract {
     struct File {
         string id;
         string title;
-        string dept;
+        string department;
         string role;
         string filepath;
         string mimetype;
@@ -17,13 +17,13 @@ contract FileContract {
     mapping(string => File) public files;
     string[] public fileIds;
 
-    event FileCreated(string id, string title, string dept, string role, string filepath, string mimetype, string uploadedAt, string merkleRoot, string originalName, string size);
+    event FileCreated(string id, string title, string department, string role, string filepath, string mimetype, string uploadedAt, string merkleRoot, string originalName, string size);
     event FileDeleted(string id);
 
-    function createFile(string memory _id, string memory _title, string memory _dept, string memory _role, string memory _filepath, string memory _mimetype, string memory _uploadedAt, string memory _merkleRoot, string memory _originalName, string memory _size) public {
-        files[_id] = File(_id, _title, _dept, _role, _filepath, _mimetype, _uploadedAt, _merkleRoot, _originalName, _size);
+    function createFile(string memory _id, string memory _title, string memory _department, string memory _role, string memory _filepath, string memory _mimetype, string memory _uploadedAt, string memory _merkleRoot, string memory _originalName, string memory _size) public {
+        files[_id] = File(_id, _title, _department, _role, _filepath, _mimetype, _uploadedAt, _merkleRoot, _originalName, _size);
         fileIds.push(_id);
-        emit FileCreated(_id, _title, _dept, _role, _filepath, _mimetype, _uploadedAt, _merkleRoot, _originalName, _size);
+        emit FileCreated(_id, _title, _department, _role, _filepath, _mimetype, _uploadedAt, _merkleRoot, _originalName, _size);
     }
 
     function deleteFile(string memory _id) public {
@@ -40,7 +40,7 @@ contract FileContract {
     function getFilesByDepartment(string memory _department) public view returns (File[] memory) {
         uint count = 0;
         for (uint i = 0; i < fileIds.length; i++) {
-            if (keccak256(abi.encodePacked(files[fileIds[i]].dept)) == keccak256(abi.encodePacked(_department))) {
+            if (keccak256(abi.encodePacked(files[fileIds[i]].department)) == keccak256(abi.encodePacked(_department))) {
                 count++;
             }
         }
@@ -48,7 +48,7 @@ contract FileContract {
         File[] memory result = new File[](count);
         uint index = 0;
         for (uint i = 0; i < fileIds.length; i++) {
-            if (keccak256(abi.encodePacked(files[fileIds[i]].dept)) == keccak256(abi.encodePacked(_department))) {
+            if (keccak256(abi.encodePacked(files[fileIds[i]].department)) == keccak256(abi.encodePacked(_department))) {
                 result[index] = files[fileIds[i]];
                 index++;
             }
