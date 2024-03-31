@@ -12,6 +12,7 @@ contract UserContract {
     }
 
     mapping(string => User) public users;
+    mapping(string => bool) public emailExists;
     string[] public userIds;
 
     event UserCreated(string id, string name, string email, string department, string role, string status);
@@ -23,13 +24,14 @@ contract UserContract {
     string constant ERROR_USER_EXISTS = "UE001";
 
     function createUser(string memory _id, string memory _name, string memory _email, string memory _password, string memory _department, string memory _role) public {
-        if (bytes(users[_id].id).length != 0 || bytes(users[_email].id).length != 0) {
+        if (emailExists[_email]) { // Check if email already exists
             emit UserAlreadyExists(_email);
             revert(ERROR_USER_EXISTS);
         }
 
         users[_id] = User(_id, _name, _email, _password, _department, _role, "Pending");
         userIds.push(_id);
+        emailExists[_email] = true; // Mark email as existing
         emit UserCreated(_id, _name, _email, _department, _role, "Pending");
     }
 
@@ -42,7 +44,9 @@ contract UserContract {
 
     function deleteUser(string memory _id) public {
         require(bytes(users[_id].id).length != 0, "User does not exist");
+        string memory _email = users[_id].email;
         delete users[_id];
+        emailExists[_email] = false;
         emit UserDeleted(_id);
     }
 
