@@ -49,12 +49,4 @@ contract DataOwnerContract {
         }
         revert("Data owner does not exist");
     }
-
-    function getAllDataOwners() public view returns (DataOwner[] memory) {
-        DataOwner[] memory result = new DataOwner[](dataOwnerIds.length);
-        for (uint i = 0; i < dataOwnerIds.length; i++) {
-            result[i] = dataOwners[dataOwnerIds[i]];
-        }
-        return result;
-    }
 }

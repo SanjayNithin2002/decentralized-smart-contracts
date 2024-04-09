@@ -84,11 +84,4 @@ contract UserContract {
         return result;
     }
 
-    function getAllUsers() public view returns (User[] memory) {
-        User[] memory result = new User[](userIds.length);
-        for (uint i = 0; i < userIds.length; i++) {
-            result[i] = users[userIds[i]];
-        }
-        return result;
-    }
 }
