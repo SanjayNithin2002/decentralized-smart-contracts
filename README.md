@@ -1,1 +1,1 @@
-# decentralized-smart-contracts
+Smart Contracts for capstone project.
